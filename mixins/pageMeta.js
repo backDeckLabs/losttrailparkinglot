@@ -60,16 +60,17 @@ export const pageMeta = {
       return 'At the corner of space and time.';
     },
     seoImage() {
-      if (this.pageData.meta_image && this.pageData.meta_image.url) {
-        return this.pageData.meta_image.url;
-      } else if (this.pageData.hero_image && this.pageData.hero_image.url) {
-        return this.pageData.hero_image.url;
-      } else if (
-        this.$store.getters.settings &&
-        this.$store.getters.settings.page_meta_image_default.url
-      ) {
-        return this.$store.getters.settings.page_meta_image_default.url;
-      }
+      // TODO: implement seoImage logic
+      // if (this.pageData.meta_image && this.pageData.meta_image.url) {
+      //   return this.pageData.meta_image.url;
+      // } else if (this.pageData.hero_image && this.pageData.hero_image.url) {
+      //   return this.pageData.hero_image.url;
+      // } else if (
+      //   this.$store.getters.settings &&
+      //   this.$store.getters.settings.page_meta_image_default.url
+      // ) {
+      //   return this.$store.getters.settings.page_meta_image_default.url;
+      // }
 
       return false;
     },
@@ -252,7 +253,7 @@ export const pageMeta = {
     this.$store.dispatch('pushDataLayerEvent', {
       eventName: 'pageView',
       payload: {
-        pageview: {
+        pageView: {
           route: this.$route.fullPath,
           title: this.seoTitle,
           description: this.seoDesc,

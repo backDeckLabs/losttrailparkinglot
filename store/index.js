@@ -92,12 +92,12 @@ export const actions = {
       this.$gtm.init(getters.googleTagManagerId);
     }
   },
-  pushDataLayerEvent({getters}, {eventName, payload, nonInteractive}) {
+  pushDataLayerEvent({getters}, {eventName, payload, nonInteractive = true}) {
     if (getters.trackingEnabled) {
       window.dataLayer.push({
         event: `ltpl.${eventName}`,
         ...payload,
-        nonInteractive: nonInteractive || true,
+        nonInteractive: nonInteractive,
       });
     }
   },

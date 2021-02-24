@@ -11,9 +11,11 @@
 
 <script>
 import {request, gql} from '@/cms/datocms';
+import {pageMeta} from '~/mixins/pageMeta';
 
 export default {
-  async asyncData() {
+  mixins: [pageMeta],
+  asyncData: async () => {
     const data = await request({
       query: gql`
         {
