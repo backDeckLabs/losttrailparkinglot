@@ -12,7 +12,7 @@
           <h1 class="title">How the hell did you even get here?</h1>
           <h3 class="error-message">{{ error.message }}</h3>
           <base-cta-link size="200" :url="routes.home()" :external-link="false">
-            Back To the Lot
+            To the Parking Lot
           </base-cta-link>
         </div>
       </theme>
@@ -22,14 +22,13 @@
 
 <script>
 import Theme from '../components/patterns/Theme';
-import BaseButton from '../components/base/BaseButton';
 import BaseImage from '@/components/base/BaseImage';
 import BaseCtaLink from '@/components/base/BaseCtaLink';
 
 export default {
   name: 'error',
   layout: 'static',
-  components: {BaseCtaLink, BaseImage, BaseButton, Theme},
+  components: {BaseCtaLink, BaseImage, Theme},
   transition: {
     name: 'page',
     mode: 'out-in',

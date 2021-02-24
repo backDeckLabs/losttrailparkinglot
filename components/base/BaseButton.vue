@@ -46,7 +46,9 @@ export default {
   computed: {
     // Only return localePath version if using localized content from nuxt-i18n module
     finalLinkPath() {
-      return this.linkPath && !this.externalLink ? this.localePath(this.linkPath) : this.linkPath;
+      // TODO localize button linkPaths here if needed
+      // return this.linkPath && !this.externalLink ? this.localePath(this.linkPath) : this.linkPath;
+      return this.linkPath;
     },
   },
 };
