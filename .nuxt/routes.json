@@ -1,0 +1,16 @@
+[
+  {
+    "name": "posts-slug",
+    "path": "/posts/:slug?",
+    "component": "/Users/Shared/proj_zr/losttrailparkinglot/pages/posts/_slug.vue",
+    "chunkName": "pages/posts/_slug",
+    "_name": "_e7f02bf0"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/Shared/proj_zr/losttrailparkinglot/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_1d44f80c"
+  }
+]
