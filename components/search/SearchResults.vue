@@ -155,7 +155,7 @@ export default {
       const title = result.data.title;
 
       if (Array.isArray(title)) {
-        return this.$prismic.asText(title);
+        return this.title;
       }
       return title;
     },

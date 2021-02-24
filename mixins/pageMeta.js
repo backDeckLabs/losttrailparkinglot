@@ -3,7 +3,7 @@ import {mapGetters} from 'vuex';
 /**
  * @mixin
  * This mixin depends on the parent component having a piece of data called "pageData" which represents
- * the Prismic data object of that page.
+ * the CMS data object of that page.
  */
 
 export const pageMeta = {
@@ -37,7 +37,7 @@ export const pageMeta = {
       if (this.pageData.meta_title) {
         return this.pageData.meta_title;
       } else if (this.pageData.title) {
-        return this.$prismic.asText(this.pageData.title);
+        return this.pageData.title;
       } else if (
         this.$store.getters.settings &&
         this.$store.getters.settings.page_meta_title_fallback

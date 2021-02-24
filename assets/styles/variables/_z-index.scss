@@ -17,7 +17,6 @@ $z-index-level-super: $z-index-level-modal + $z-index-gap;
 $main-page-z-index: $z-index-level-page;
 $page-top-gradient-z-index: $main-page-z-index + 10;
 $below-masthead-content-z-index: $page-top-gradient-z-index + 1;
-$prismic-edit-z-index:$z-index-level-modal + 1;
 
 $slices-z-index: $main-page-z-index;
 $story-breadcrumb-z-index: $main-page-z-index + 1;
