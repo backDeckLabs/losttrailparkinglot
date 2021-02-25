@@ -42,60 +42,63 @@
         <img
           src="https://521dimensions.com/img/open-source/amplitudejs/examples/visualizations/arrow-up.svg"
           class="arrow-up-icon"
+          @click="showPlaylist = true"
         />
       </div>
 
-      <div id="visualizations-player-playlist">
-        <div class="top-arrow">
-          <img
-            src="https://521dimensions.com/img/open-source/amplitudejs/examples/visualizations/arrow-down.svg"
-            class="arrow-down-icon"
-          />
-        </div>
+      <transition name="fade">
+        <div v-show="showPlaylist" id="visualizations-player-playlist">
+          <div class="top-arrow">
+            <img
+              src="https://521dimensions.com/img/open-source/amplitudejs/examples/visualizations/arrow-down.svg"
+              class="arrow-down-icon"
+              @click="showPlaylist = false"
+            />
+          </div>
 
-        <div class="top">
-          <span class="playlist-title">Songs</span>
-          <div class="amplitude-repeat"></div>
-          <div class="amplitude-shuffle"></div>
-        </div>
+          <div class="top">
+            <span class="playlist-title">Songs</span>
+            <div class="amplitude-repeat"></div>
+            <div class="amplitude-shuffle"></div>
+          </div>
 
-        <div class="songs-container">
-          <div
-            v-for="(tune, index) in allTunes"
-            :key="`song-item-${index}`"
-            class="song amplitude-song-container amplitude-play-pause"
-            :data-amplitude-song-index="index"
-          >
-            <span class="song-position">01</span>
-            <div class="song-meta-data-container">
-              <span
-                class="song-name"
-                data-amplitude-song-info="name"
-                :data-amplitude-song-index="index"
-              ></span>
-              <span
-                class="song-artist"
-                data-amplitude-song-info="artist"
-                :data-amplitude-song-index="index"
-              ></span>
+          <div class="songs-container">
+            <div
+              v-for="(tune, index) in allTunes"
+              :key="`song-item-${index}`"
+              class="song amplitude-song-container amplitude-play-pause"
+              :data-amplitude-song-index="index"
+            >
+              <div class="song-meta-data-container">
+                <span
+                  class="song-name"
+                  data-amplitude-song-info="name"
+                  :data-amplitude-song-index="index"
+                ></span>
+                <span
+                  class="song-artist"
+                  data-amplitude-song-info="artist"
+                  :data-amplitude-song-index="index"
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="active-audio">
+            <img class="cover-art-small" data-amplitude-song-info="cover_art_url" />
+
+            <div class="active-audio-right">
+              <span class="song-name" data-amplitude-song-info="name"></span>
+
+              <div class="active-audio-controls">
+                <div class="amplitude-prev"></div>
+                <div class="amplitude-play-pause"></div>
+                <div class="amplitude-next"></div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="active-audio">
-          <img class="cover-art-small" data-amplitude-song-info="cover_art_url" />
-
-          <div class="active-audio-right">
-            <span class="song-name" data-amplitude-song-info="name"></span>
-
-            <div class="active-audio-controls">
-              <div class="amplitude-prev"></div>
-              <div class="amplitude-play-pause"></div>
-              <div class="amplitude-next"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </transition>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
       <defs>
@@ -130,6 +133,11 @@ export default {
     });
 
     return {ready: !!data, ...data};
+  },
+  data() {
+    return {
+      showPlaylist: false,
+    };
   },
   methods: {
     initTuner() {
@@ -180,6 +188,13 @@ export default {
   },
   mounted() {
     this.initTuner();
+
+    // Prevent body scroll on space key press
+    window.addEventListener('keydown', function (e) {
+      if (e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+      }
+    });
   },
 };
 </script>
@@ -537,15 +552,6 @@ div#visualizations-player {
   position: relative;
 }
 
-/*
-  Small only
-*/
-/*
-  Medium only
-*/
-/*
-  Large Only
-*/
 div#visualizations-player-playlist {
   background-color: #482d57;
   border-radius: 20px;
@@ -557,22 +563,27 @@ div#visualizations-player-playlist {
   padding: 25px;
   padding-top: 25px;
   z-index: 9999;
-  display: none;
+  display: block;
+
+  div.top-arrow {
+    text-align: center;
+  }
+
+  div.top-arrow img {
+    cursor: pointer;
+  }
+
+  div.top {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  div.top span.playlist-title {
+    color: white;
+    font-size: 36px;
+    font-weight: 700;
+  }
 }
-div#visualizations-player-playlist div.top-arrow {
-  text-align: center;
-}
-div#visualizations-player-playlist div.top-arrow img {
-  cursor: pointer;
-}
-div#visualizations-player-playlist div.top {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-div#visualizations-player-playlist div.top span.playlist-title {
-  color: white;
-  font-size: 36px;
-  font-weight: 700;
-}
+
 div#visualizations-player-playlist div.top div.amplitude-shuffle {
   width: 22px;
   height: 13px;
