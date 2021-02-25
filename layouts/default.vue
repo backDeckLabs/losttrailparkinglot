@@ -181,6 +181,7 @@ export default {
 main {
   position: relative;
   width: 100%;
+  min-height: 100vh;
   z-index: $main-page-z-index;
 
   &::before {
