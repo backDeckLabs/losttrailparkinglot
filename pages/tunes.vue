@@ -191,7 +191,7 @@ export default {
 
     // Prevent body scroll on space key press
     window.addEventListener('keydown', function (e) {
-      if (e.keyCode == 32 && e.target == document.body) {
+      if (e.keyCode == 32) {
         e.preventDefault();
       }
     });

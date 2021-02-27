@@ -17,8 +17,6 @@ export default {
 <style scoped lang="scss">
 .app-masthead {
   height: $header-height;
-  display: flex;
-  align-items: center;
 }
 
 .masthead-inner {
@@ -26,6 +24,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 100%;
 }
 
 .menu-toggle,

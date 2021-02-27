@@ -1,19 +1,26 @@
 <template>
   <article class="home-page">
-    <div class="title-container">
-      <h1 class="title">
-        Lost Trail Parking Lot
-        <span class="dotcom">.com</span>
-      </h1>
-    </div>
+    <page-wrapper spacing below-masthead>
+      <layout-container class="home-page-inner">
+        <div class="title-container">
+          <h1 class="title">
+            Lost Trail Parking Lot
+            <span class="dotcom">.com</span>
+          </h1>
+        </div>
+      </layout-container>
+    </page-wrapper>
   </article>
 </template>
 
 <script>
 import {request, gql} from '@/cms/datocms';
 import {pageMeta} from '~/mixins/pageMeta';
+import PageWrapper from '@/components/layout/PageWrapper';
+import LayoutContainer from '@/components/layout/LayoutContainer';
 
 export default {
+  components: {LayoutContainer, PageWrapper},
   mixins: [pageMeta],
   asyncData: async () => {
     const data = await request({
@@ -41,11 +48,12 @@ export default {
 .home-page {
   background-color: #000;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  padding: 4.44vw;
+}
+
+.home-page-inner {
+  display: flex;
+  justify-content: center;
 }
 
 .title-container {
@@ -62,13 +70,13 @@ export default {
 
 .title {
   margin: 0;
-  max-width: 8ex;
-  font-size: 20vw;
+  max-width: 9ex;
+  font-size: 18vw;
   font-weight: 600;
   line-height: 1;
 
   @media (min-width: 900px) {
-    font-size: 200px;
+    font-size: 175px;
   }
 }
 
