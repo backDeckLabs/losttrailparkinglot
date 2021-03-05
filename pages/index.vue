@@ -8,6 +8,7 @@
             <span class="dotcom">.com</span>
           </h1>
         </div>
+        <base-cta-link :url="`/manifesto`">Read Manifesto</base-cta-link>
       </layout-container>
     </page-wrapper>
   </article>
@@ -18,9 +19,10 @@ import {request, gql} from '@/cms/datocms';
 import {pageMeta} from '~/mixins/pageMeta';
 import PageWrapper from '@/components/layout/PageWrapper';
 import LayoutContainer from '@/components/layout/LayoutContainer';
+import BaseCtaLink from '@/components/base/BaseCtaLink';
 
 export default {
-  components: {LayoutContainer, PageWrapper},
+  components: {BaseCtaLink, LayoutContainer, PageWrapper},
   mixins: [pageMeta],
   asyncData: async () => {
     const data = await request({

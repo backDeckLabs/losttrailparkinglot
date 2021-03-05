@@ -12,11 +12,12 @@
         showArtwork
       )}`"
     ></iframe>
-    <button @click="togglePlay">Toggle</button>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
   name: 'SoundcloudPlaylist',
   props: {
@@ -68,8 +69,14 @@ export default {
     return {
       iframeId: 'soundcloudIframe',
       playlist: null,
-      tracks: null
+      playlistStoreUnsubscribe: null
     };
+  },
+  computed: {
+    ...mapGetters({
+      shuffle: 'playlist/shuffle',
+      tracks: 'playlist/tracks'
+    })
   },
   methods: {
     togglePlay() {
@@ -84,6 +91,9 @@ export default {
     goToTrack(index) {
       this.playlist.skip(index);
     },
+    seekTo(milliseconds) {
+      this.playlist.seekTo(milliseconds);
+    },
     initSoundcloudPlayer() {
       let widgetScript = document.createElement('script');
       widgetScript.setAttribute('src', '/js/soundcloudWidget.js');
@@ -95,23 +105,35 @@ export default {
           this.playlist.bind(SC.Widget.Events.READY, () => {
             // Set tracks into local state
             this.playlist.getSounds((response) => {
-              this.tracks = response;
-              console.log('tracks are: ', response);
+              this.$store.dispatch('playlist/setTracks', response);
             });
 
+            // playlist is playing
             this.playlist.bind(SC.Widget.Events.PLAY, () => {
-              // playlist is playing
+              this.$store.dispatch('playlist/setPlaying', true);
+
+              this.playlist.getCurrentSoundIndex(index => {
+                this.$store.dispatch('playlist/setActiveTrackIndex', index);
+
+                this.playlist.getCurrentSound((response) => {
+                  this.$store.dispatch('playlist/setTrack', {index: index, data: response});
+                });
+              })
+            });
+
+            // playlist is paused
+            this.playlist.bind(SC.Widget.Events.PAUSE, () => {
+              this.$store.dispatch('playlist/setPlaying', false);
             });
 
             // Listen for final track to keep playlist alive
             this.playlist.bind(SC.Widget.Events.FINISH, () => {
               this.playlist.getCurrentSoundIndex(index => {
-                console.log('index is: ', index);
-                console.log('track length: ', this.tracks.length);
                 if (index === this.tracks.length - 1) {
                   this.goToTrack(0);
+                  this.seekTo(0);
                 }
-              })
+              });
             });
           });
         }, 500);
@@ -122,13 +144,32 @@ export default {
   mounted() {
     this.initSoundcloudPlayer();
 
-    // Prevent body scroll on space key press
-    window.addEventListener('keydown', function (e) {
-      if (e.keyCode == 32) {
+    // Keystroke listeners for playlist control
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode == 32) {          // Space key
         e.preventDefault();
+        this.togglePlay();
+      } else if (e.keyCode == 39) {   // Right arrow
+        this.nextTrack();
+      } else if (e.keyCode == 37) {   // Left arrow
+        this.prevTrack();
+      }
+    });
+
+    // Playlist control actions subscription
+    this.playlistStoreUnsubscribe = this.$store.subscribeAction((action) => {
+      if (action.type === 'playlist/toggleTrack') {
+        this.togglePlay();
+      } else if (action.type === 'playlist/nextTrack') {
+        this.nextTrack();
+      } else if (action.type === 'playlist/prevTrack') {
+        this.prevTrack();
       }
     });
   },
+  beforeDestroy() {
+    this.playlistStoreUnsubscribe();
+  }
 };
 </script>
 

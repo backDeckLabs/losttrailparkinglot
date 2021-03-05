@@ -18,6 +18,12 @@
     </main>
     <app-footer class="app-footer" />
     <portal-target name="modalPortal" multiple />
+    <div class="tuner">
+      <playlist-controls />
+      <soundcloud-playlist
+        playlist-embed-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1217713789"
+      />
+    </div>
     <icon-definitions />
   </div>
 </template>
@@ -30,10 +36,14 @@ import AppFooter from '../components/decorator/AppFooter.vue';
 import IconDefinitions from '../components/utility/IconDefinitions';
 import AppNavigation from '@/components/decorator/AppNavigation';
 import AppMasthead from '@/components/decorator/AppMasthead';
+import SoundcloudPlaylist from '@/components/playlist/SoundcloudPlaylist';
+import PlaylistControls from '@/components/playlist/PlaylistControls';
 
 export default {
   name: 'BaseLayout',
   components: {
+    PlaylistControls,
+    SoundcloudPlaylist,
     AppMasthead,
     AppNavigation,
     IconDefinitions,
