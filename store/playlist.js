@@ -2,7 +2,8 @@ export const state = () => ({
   tracks: [],
   activeTrackIndex: null,
   playing: false,
-  shuffle: true
+  shuffle: true,
+  showPlaylist: false
 });
 
 export const getters = {
@@ -20,6 +21,9 @@ export const getters = {
   },
   shuffle: (state) => {
     return state.shuffle;
+  },
+  showPlaylist: (state) => {
+    return state.showPlaylist;
   }
 };
 
@@ -29,7 +33,7 @@ export const mutations = {
   },
   SET_TRACK(state, obj) {
     state.tracks[obj.index] = {...obj.data};
-    state.tracks = {...state.tracks};
+    state.tracks = [...state.tracks];
   },
   SET_ACTIVE_TRACK_INDEX(state, val) {
     state.activeTrackIndex = val;
@@ -39,6 +43,9 @@ export const mutations = {
   },
   SET_SHUFFLE(state, val) {
     state.shuffle = val;
+  },
+  SET_SHOW_PLAYLIST(state, val) {
+    state.showPlaylist = val;
   }
 };
 
@@ -57,6 +64,9 @@ export const actions = {
   },
   toggleShuffle({state, commit}) {
     commit('SET_SHUFFLE', !state.shuffle);
+  },
+  toggleShowPlaylist({state, commit}) {
+    commit('SET_SHOW_PLAYLIST', !state.showPlaylist);
   },
   toggleTrack() {
     // console.log('toggle music')

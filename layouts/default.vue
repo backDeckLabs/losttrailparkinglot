@@ -20,9 +20,12 @@
     <portal-target name="modalPortal" multiple />
     <div class="tuner">
       <playlist-controls />
-      <soundcloud-playlist
-        playlist-embed-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1217713789"
-      />
+      <transition name="fade">
+        <soundcloud-playlist
+          v-show="showPlaylist"
+          playlist-embed-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1217713789"
+        />
+      </transition>
     </div>
     <icon-definitions />
   </div>
@@ -65,7 +68,8 @@ export default {
       appWrapperId: 'appId',
       settings: 'settings',
       navActive: 'navigation/navActive',
-      trackingEnabled: 'trackingEnabled',
+      showPlaylist: 'playlist/showPlaylist',
+      trackingEnabled: 'trackingEnabled'
     }),
     globalMetaFields() {
       const metaFields = [];

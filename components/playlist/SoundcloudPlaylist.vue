@@ -75,7 +75,8 @@ export default {
   computed: {
     ...mapGetters({
       shuffle: 'playlist/shuffle',
-      tracks: 'playlist/tracks'
+      tracks: 'playlist/tracks',
+      activeTrackIndex: 'playlist/activeTrackIndex'
     })
   },
   methods: {
@@ -83,10 +84,18 @@ export default {
       this.playlist.toggle();
     },
     nextTrack() {
-      this.playlist.next();
+      if (this.activeTrackIndex === this.tracks.length - 1) {
+       this.goToTrack(0);
+      } else {
+        this.playlist.next();
+      }
     },
     prevTrack() {
-      this.playlist.prev();
+      if (this.activeTrackIndex === 0) {
+        this.goToTrack(this.tracks.length - 1);
+      } else {
+        this.playlist.prev();
+      }
     },
     goToTrack(index) {
       this.playlist.skip(index);
@@ -115,9 +124,12 @@ export default {
               this.playlist.getCurrentSoundIndex(index => {
                 this.$store.dispatch('playlist/setActiveTrackIndex', index);
 
-                this.playlist.getCurrentSound((response) => {
-                  this.$store.dispatch('playlist/setTrack', {index: index, data: response});
-                });
+                if (!this.tracks[index].title) {
+                  this.playlist.getCurrentSound((response) => {
+                    console.log('set track to: ', response.title);
+                    this.$store.dispatch('playlist/setTrack', {index: index, data: response});
+                  });
+                }
               })
             });
 
