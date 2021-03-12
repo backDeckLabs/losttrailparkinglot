@@ -67,7 +67,8 @@ export default {
       shuffle: 'playlist/shuffle',
       shuffleOrder: 'playlist/shuffleOrder',
       tracks: 'playlist/tracks',
-      activeTrackIndex: 'playlist/activeTrackIndex'
+      activeTrackIndex: 'playlist/activeTrackIndex',
+      activeShuffleIndex: 'playlist/activeShuffleIndex'
     })
   },
   methods: {
@@ -75,17 +76,37 @@ export default {
       this.playlist.toggle();
     },
     nextTrack() {
-      if (this.activeTrackIndex === this.tracks.length - 1) {
-       this.goToTrack(0);
+      if (this.shuffle) {
+        if (this.activeShuffleIndex === this.tracks.length - 1) {
+          console.log('go to beginning');
+          this.goToTrack(this.shuffleOrder[0]);
+        } else {
+          console.log('go to: ', this.activeShuffleIndex + 1);
+          this.goToTrack(this.shuffleOrder[this.activeShuffleIndex + 1]);
+        }
       } else {
-        this.playlist.next();
+        if (this.activeTrackIndex === this.tracks.length - 1) {
+          this.goToTrack(0);
+        } else {
+          this.playlist.next();
+        }
       }
     },
     prevTrack() {
-      if (this.activeTrackIndex === 0) {
-        this.goToTrack(this.tracks.length - 1);
+      if (this.shuffle) {
+        if (this.activeShuffleIndex === 0) {
+          console.log('go to end');
+          this.goToTrack(this.shuffleOrder[this.tracks.length - 1]);
+        } else {
+          console.log('go to: ', this.activeShuffleIndex);
+          this.goToTrack(this.shuffleOrder[this.activeShuffleIndex - 1]);
+        }
       } else {
-        this.playlist.prev();
+        if (this.activeTrackIndex === 0) {
+          this.goToTrack(this.tracks.length - 1);
+        } else {
+          this.playlist.prev();
+        }
       }
     },
     goToTrack(index) {
