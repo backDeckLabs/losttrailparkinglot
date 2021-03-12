@@ -5,10 +5,7 @@
       width="500px"
       height="450"
       frameborder="no"
-      allow="autoplay"
-      :src="`${playlistEmbedUrl}&color=%23${color}&auto_play=${stringBoolean(
-        autoplay
-      )}&start_track=${startTrack}&show_teaser=true&visual=true&sharing=${stringBoolean(sharing)}&show_artwork=${stringBoolean(
+      :src="`${playlistEmbedUrl}&color=%23${color}&start_track=${startTrack}&show_teaser=true&visual=true&sharing=${stringBoolean(sharing)}&show_artwork=${stringBoolean(
         showArtwork
       )}`"
     ></iframe>
@@ -28,13 +25,6 @@ export default {
     playlistEmbedUrl: {
       type: String,
       required: true,
-    },
-    /**
-     * Whether or not to autoplay the playlist upon init
-     */
-    autoplay: {
-      type: Boolean,
-      default: true,
     },
     /**
      * Color of play button and waveform visualization
@@ -75,6 +65,7 @@ export default {
   computed: {
     ...mapGetters({
       shuffle: 'playlist/shuffle',
+      shuffleOrder: 'playlist/shuffleOrder',
       tracks: 'playlist/tracks',
       activeTrackIndex: 'playlist/activeTrackIndex'
     })
@@ -104,53 +95,54 @@ export default {
       this.playlist.seekTo(milliseconds);
     },
     initSoundcloudPlayer() {
-      let widgetScript = document.createElement('script');
-      widgetScript.setAttribute('src', '/js/soundcloudWidget.js');
-      widgetScript.onload = () => {
-        setTimeout(() => {
-          this.playlist = SC.Widget(document.getElementById(this.iframeId));
+      setTimeout(() => {
+        this.playlist = SC.Widget(document.getElementById(this.iframeId));
 
-          // Playlist events and listeners
-          this.playlist.bind(SC.Widget.Events.READY, () => {
-            // Set tracks into local state
-            this.playlist.getSounds((response) => {
-              this.$store.dispatch('playlist/setTracks', response);
-            });
+        // Playlist events and listeners
+        // Set tracks into local state
+        this.playlist.getSounds((response) => {
+          this.$store.dispatch('playlist/setTracks', response);
+          this.$store.dispatch('playlist/setShuffleOrder');
+          this.goToTrack(this.shuffleOrder[0]);
+        });
 
-            // playlist is playing
-            this.playlist.bind(SC.Widget.Events.PLAY, () => {
-              this.$store.dispatch('playlist/setPlaying', true);
+        this.playlist.bind(SC.Widget.Events.READY, () => {
+          console.log("READY");
+        });
 
-              this.playlist.getCurrentSoundIndex(index => {
-                this.$store.dispatch('playlist/setActiveTrackIndex', index);
+        // playlist is playing
+        this.playlist.bind(SC.Widget.Events.PLAY, () => {
+          console.log('PLAYING!!');
+          this.$store.dispatch('playlist/setPlaying', true);
 
-                if (!this.tracks[index].title) {
-                  this.playlist.getCurrentSound((response) => {
-                    console.log('set track to: ', response.title);
-                    this.$store.dispatch('playlist/setTrack', {index: index, data: response});
-                  });
-                }
-              })
-            });
+          this.playlist.getCurrentSoundIndex(index => {
+            this.$store.dispatch('playlist/setActiveTrackIndex', index);
 
-            // playlist is paused
-            this.playlist.bind(SC.Widget.Events.PAUSE, () => {
-              this.$store.dispatch('playlist/setPlaying', false);
-            });
-
-            // Listen for final track to keep playlist alive
-            this.playlist.bind(SC.Widget.Events.FINISH, () => {
-              this.playlist.getCurrentSoundIndex(index => {
-                if (index === this.tracks.length - 1) {
-                  this.goToTrack(0);
-                  this.seekTo(0);
-                }
+            if (!this.tracks[index].title) {
+              this.playlist.getCurrentSound((response) => {
+                console.log('set track to: ', response.title);
+                this.$store.dispatch('playlist/setTrack', {index: index, data: response});
               });
-            });
+            }
+          })
+        });
+
+        // playlist is paused
+        this.playlist.bind(SC.Widget.Events.PAUSE, () => {
+          this.$store.dispatch('playlist/setPlaying', false);
+        });
+
+        // Listen for final track to keep playlist alive
+        this.playlist.bind(SC.Widget.Events.FINISH, () => {
+          this.playlist.getCurrentSoundIndex(index => {
+            if (index === this.tracks.length - 1) {
+              this.goToTrack(0);
+              this.seekTo(0);
+            }
           });
-        }, 500);
-      };
-      document.head.appendChild(widgetScript);
+        });
+
+      }, 1000);
     }
   },
   mounted() {

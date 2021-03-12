@@ -117,6 +117,9 @@ export default {
         src: `https://polyfill.io/v3/polyfill.min.js?features=${polyfillFeatures}`,
         body: true,
       },
+      {
+        src: '//w.soundcloud.com/player/api.js'
+      }
     ],
     __dangerouslyDisableSanitizers: ['script'],
   },
