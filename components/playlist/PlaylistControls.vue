@@ -14,22 +14,31 @@
       </div>
     </transition>
     <div class="playlist-main-control-container">
-      <button @click="prev">Prev</button>
-      <button @click="toggle">Toggle</button>
-      <button @click="next">Next</button>
+      <button @click="prev"><base-icon icon="backward" /></button>
+      <button @click="toggle">
+        <transition name="fade" mode="out-in">
+          <base-icon v-if="playing" icon="pause" />
+          <base-icon v-else icon="play" />
+        </transition>
+      </button>
+      <button @click="next"><base-icon icon="forward" /></button>
     </div>
     <div class="playlist-utility">
-      <button @click="toggleShuffle">Shuffle</button>
-      <button @click="togglePlaylist">Playlist</button>
+      <button @click="toggleShuffle">
+        <base-icon icon="shuffle" :class="['shuffle-icon', {'active': shuffle}]" />
+      </button>
+      <button @click="togglePlaylist"><base-icon icon="playlist" /></button>
     </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
+import BaseIcon from '~/components/base/BaseIcon';
 
 export default {
   name: 'PlaylistControls',
+  components: {BaseIcon},
   computed: {
     ...mapGetters({
       playing: 'playlist/isPlaying',
@@ -86,9 +95,28 @@ export default {
 $marquee-height: $spacing-300;
 
 .playlist-controls {
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 500px;
   padding: calc(#{$marquee-height} + #{$spacing-100 * 2}) $gutter-mobile $spacing-100;
   color: $color-white;
+  background-color: rgba($color-gray-900, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 100000;
+
+  /deep/ {
+    svg {
+      fill: $color-white;
+    }
+  }
+}
+
+.shuffle-icon {
+  &.active {
+    fill: $color-primary;
+  }
 }
 
 .playlist-marquee {

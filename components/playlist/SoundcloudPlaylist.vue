@@ -78,10 +78,8 @@ export default {
     nextTrack() {
       if (this.shuffle) {
         if (this.activeShuffleIndex === this.tracks.length - 1) {
-          console.log('go to beginning');
           this.goToTrack(this.shuffleOrder[0]);
         } else {
-          console.log('go to: ', this.activeShuffleIndex + 1);
           this.goToTrack(this.shuffleOrder[this.activeShuffleIndex + 1]);
         }
       } else {
@@ -95,10 +93,8 @@ export default {
     prevTrack() {
       if (this.shuffle) {
         if (this.activeShuffleIndex === 0) {
-          console.log('go to end');
           this.goToTrack(this.shuffleOrder[this.tracks.length - 1]);
         } else {
-          console.log('go to: ', this.activeShuffleIndex);
           this.goToTrack(this.shuffleOrder[this.activeShuffleIndex - 1]);
         }
       } else {
@@ -161,6 +157,11 @@ export default {
               this.seekTo(0);
             }
           });
+        });
+
+        // In case of error
+        this.playlist.bind(SC.Widget.Events.ERROR, () => {
+          alert('there is an error');
         });
 
       }, 1000);
