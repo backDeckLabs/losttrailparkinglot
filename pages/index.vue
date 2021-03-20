@@ -1,19 +1,35 @@
 <template>
   <article class="home-page">
-    <div class="title-container">
-      <h1 class="title">
-        Lost Trail Parking Lot
-        <span class="dotcom">.com</span>
-      </h1>
+    <div class="home-page-intro">
+      <div class="title-video-background">
+<!--        <video autoplay loop muted playsinline preload="auto" width="100%">-->
+<!--          <source src="https://www.jonathandempsey.dev/wp-content/uploads/2020/05/waves.mp4" type="video/mp4">-->
+<!--        </video>-->
+        <img src="https://media2.giphy.com/media/l2x7mzCCX7oDX2r0PD/giphy.gif" />
+      </div>
+      <layout-container class="title-text-container">
+        <h1 class="title">
+          Lost Trail Parking Lot
+          <span class="dotcom">.com</span>
+        </h1>
+      </layout-container>
     </div>
+    <layout-container class="home-page-content">
+      <base-cta-link :url="`/manifesto`">Read Manifesto</base-cta-link>
+    </layout-container>
   </article>
 </template>
 
 <script>
 import {request, gql} from '@/cms/datocms';
+import {pageMeta} from '~/mixins/pageMeta';
+import LayoutContainer from '@/components/layout/LayoutContainer';
+import BaseCtaLink from '@/components/base/BaseCtaLink';
 
 export default {
-  async asyncData() {
+  components: {BaseCtaLink, LayoutContainer},
+  mixins: [pageMeta],
+  asyncData: async () => {
     const data = await request({
       query: gql`
         {
@@ -39,34 +55,50 @@ export default {
 .home-page {
   background-color: #000;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 4.44vw;
 }
 
-.title-container {
-  width: fit-content;
+.home-page-intro {
+  position: relative;
+}
 
-  /* The magic */
-  -webkit-background-clip: text;
-  color: transparent;
+.title-video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url(https://media2.giphy.com/media/l2x7mzCCX7oDX2r0PD/giphy.gif);
+  /deep/ {
+    video,
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      overflow: hidden;
+    }
+  }
+}
+
+.title-text-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-dark-color;
+  color: $reversed-type-color;
+  mix-blend-mode: multiply;
 }
 
 .title {
   margin: 0;
-  max-width: 8ex;
-  font-size: 20vw;
+  max-width: 9ch;
+  font-size: 18vw;
   font-weight: 600;
   line-height: 1;
 
   @media (min-width: 900px) {
-    font-size: 200px;
+    font-size: 175px;
   }
 }
 

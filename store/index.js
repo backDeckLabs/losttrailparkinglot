@@ -75,12 +75,10 @@ export const actions = {
     const allActions = [{action: 'getSettings'}, {action: 'navigation/getFullDecoratorNav'}];
     await Promise.all(allActions.map((entry) => dispatch(entry.action, entry.args)));
   },
-  async getSettings({commit, dispatch}) {
-    // const settingsDoc = await dispatch('getSingleLocalizedDoc', {
-    //   predicateQuery: this.$prismic.predicates.at('document.type', 'settings'),
-    // });
+  async getSettings({commit}) {
+    // TODO: Fetch settings
     const settingsDoc = {};
-    commit('SET_SETTINGS', settingsDoc ? settingsDoc.data : {});
+    commit('SET_SETTINGS', settingsDoc ? settingsDoc : {});
   },
   handlePageError(_, obj) {
     obj.error({
@@ -94,12 +92,12 @@ export const actions = {
       this.$gtm.init(getters.googleTagManagerId);
     }
   },
-  pushDataLayerEvent({getters}, {eventName, payload, nonInteractive}) {
+  pushDataLayerEvent({getters}, {eventName, payload, nonInteractive = true}) {
     if (getters.trackingEnabled) {
       window.dataLayer.push({
         event: `ltpl.${eventName}`,
         ...payload,
-        nonInteractive: nonInteractive || true,
+        nonInteractive: nonInteractive,
       });
     }
   },

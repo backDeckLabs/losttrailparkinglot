@@ -32,7 +32,7 @@ export const actions = {
 
     if (searchTerm && searchTerm.length) {
       // Minor reformatting to match common search term to product naming convention
-      const reformattedSearchTerm = searchTerm.replace(`mens`, `men's`);
+      //const reformattedSearchTerm = searchTerm.replace(`mens`, `men's`);
 
       // TODO: implement product search
       const productSearchResults = [];
@@ -52,6 +52,6 @@ export const actions = {
 
     // TODO: implement content search here
 
-    return searchResults;
+    return contentTypesToSearch ? searchResults : searchTerm;
   },
 };

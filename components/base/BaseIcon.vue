@@ -44,6 +44,13 @@ export default {
         name: 'Main',
         size: 28,
         icons: [
+            'play',
+            'pause',
+            'forward',
+            'backward',
+            'shuffle',
+            'playlist',
+            'soundcloud',
             'arrow-down',
             'arrow-left',
             'arrow-right',

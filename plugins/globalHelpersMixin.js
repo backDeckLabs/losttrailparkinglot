@@ -24,11 +24,10 @@ if (!Vue.__global_mixin__) {
       pluralize(value, text) {
         return value !== 1 ? `${text}s` : text;
       },
+      // TODO Setup CMS link mapping
       cmsLinkToUrl(linkObj) {
         if (linkObj) {
-          return linkObj.link_type && (linkObj.url || linkObj.slug)
-            ? this.$prismic.dom.Link.url(linkObj, this.$prismic.linkResolver)
-            : this.$prismic.linkResolver(linkObj);
+          return linkObj.link_type && (linkObj.url || linkObj.slug) ? linkObj.url : linkObj.url;
         }
         return '/';
       },
