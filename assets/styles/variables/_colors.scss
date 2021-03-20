@@ -30,9 +30,15 @@ $color-black: $color-gray-1000;
 $color-white: #ffffff;
 
 // Type Colors
-$base-type-color: $color-gray-800;
+$base-type-color: $color-gray-1000;
 $reversed-type-color: $color-white;
 $reversed-gray: #868789;
+
+// Layout Colors
+$background-light-color: $color-white;
+$background-light-gray-color: $color-gray-100;
+$background-gray-color: $color-gray-700;
+$background-dark-color: $color-gray-1000;
 
 // Element Colors
 $overlay-background-color: rgba($color-gray-900, 0.6);
@@ -43,12 +49,6 @@ $input-border-color: #c9c9c9;
 $input-active-color: $color-primary;
 $input-placeholder-color: #7a7b7c;
 $order-detail-border-color: $color-gray-400;
-
-// Layout Colors
-$background-light-color: $color-white;
-$background-light-gray-color: $color-gray-100;
-$background-gray-color: $color-gray-700;
-$background-dark-color: $color-gray-800;
 
 // Cart Colors
 $cart-action-button-color: $color-gray-200;
