@@ -95,16 +95,12 @@ export default {
 $marquee-height: $spacing-300;
 
 .playlist-controls {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   max-width: 500px;
   padding: calc(#{$marquee-height} + #{$spacing-100 * 2}) $gutter-mobile $spacing-100;
   color: $color-white;
   background-color: rgba($color-gray-900, 0.5);
   backdrop-filter: blur(5px);
-  z-index: 100000;
 
   /deep/ {
     svg {

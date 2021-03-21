@@ -81,11 +81,11 @@ export default {
 
 .title-text-container {
   width: 100%;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: $background-dark-color;
+  padding-top: calc(#{$header-height} + #{$spacing-200});
+  padding-bottom: $spacing-300;
   color: $reversed-type-color;
   mix-blend-mode: multiply;
 }
