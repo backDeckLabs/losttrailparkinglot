@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { request, gql } from '@/cms/datocms';
+import { request, gql } from '@/plugins/datocms';
 
 export default {
   async asyncData({ params }) {

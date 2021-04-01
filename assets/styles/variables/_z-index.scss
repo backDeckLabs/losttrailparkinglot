@@ -39,7 +39,8 @@ $compare-trigger-z-index: $header-z-index - 1;
 
 
 //Modal
-
+$modal-z-index:  $z-index-level-modal;
+$playlist-z-index: $modal-z-index + 1;
 
 //Super
 $cookie-banner-z-index: $z-index-level-super;

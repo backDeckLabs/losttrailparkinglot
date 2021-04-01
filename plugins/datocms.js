@@ -1,6 +1,5 @@
 import axios from 'axios';
 import gql from 'graphql-tag';
-
 export {default as gql} from 'graphql-tag';
 
 export async function request({query, variables}) {

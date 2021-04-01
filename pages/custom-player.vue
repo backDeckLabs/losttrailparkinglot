@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import {gql, request} from '@/cms/datocms';
+import {gql, request} from '@/plugins/datocms';
 
 export default {
   name: 'tunes',

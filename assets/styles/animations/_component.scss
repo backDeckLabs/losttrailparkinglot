@@ -1,4 +1,4 @@
-.fade-in {
+.fade {
   &-enter-active,
   &-leave-active {
     transition: all 0.5s ease;
@@ -10,31 +10,14 @@
   }
 }
 
-.shoe-finder-step {
-  &-enter-active {
-    transition: all 0.75s $easing-cubic;
-  }
-
-  &-leave-active {
-    transition: all 0.6s $easing-cubic;
-  }
-
-  &-enter,
-  &-leave-to {
-    transform: translate3d(0, 2vh, 0);
-    opacity: 0;
-  }
-}
-
-.shoe-finder-nav {
+.playlist-fade {
   &-enter-active,
   &-leave-active {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.7s ease;
   }
 
   &-enter,
   &-leave-to {
-    transform: translate3d(0, 50%, 0);
     opacity: 0;
   }
 }

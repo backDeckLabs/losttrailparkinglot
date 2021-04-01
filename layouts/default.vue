@@ -14,19 +14,18 @@
     <app-masthead class="app-masthead" />
     <app-navigation class="app-navigation" />
     <main :id="mainContentId" class="app-main" :aria-hidden="stringBoolean(navActive)">
-      <nuxt />
+      <div class="main-content">
+        <nuxt />
+      </div>
       <div class="app-tuner">
         <playlist-controls />
-        <transition name="fade">
-          <soundcloud-playlist
-            v-show="showPlaylist"
-            playlist-embed-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1217713789"
-          />
-        </transition>
       </div>
     </main>
     <app-footer class="app-footer" />
     <portal-target name="modalPortal" multiple />
+    <soundcloud-playlist
+      playlist-embed-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1217713789"
+    />
     <icon-definitions />
   </div>
 </template>
@@ -68,7 +67,6 @@ export default {
       appWrapperId: 'appId',
       settings: 'settings',
       navActive: 'navigation/navActive',
-      showPlaylist: 'playlist/showPlaylist',
       trackingEnabled: 'trackingEnabled'
     }),
     globalMetaFields() {
@@ -195,7 +193,6 @@ export default {
 .app-main {
   position: relative;
   width: 100%;
-  min-height: 100vh;
   z-index: $main-page-z-index;
 
   &::before {
@@ -216,6 +213,10 @@ export default {
       height: 135px;
     }
   }
+}
+
+.main-content {
+  min-height: 100vh;
 }
 
 .app-tuner {

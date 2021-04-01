@@ -1,15 +1,19 @@
 <template>
-  <div class="soundcloud-playlist">
-    <iframe
-      :id="iframeId"
-      width="500px"
-      height="450"
-      frameborder="no"
-      :src="`${playlistEmbedUrl}&color=%23${color}&start_track=${startTrack}&show_teaser=true&visual=true&sharing=${stringBoolean(sharing)}&show_artwork=${stringBoolean(
+  <transition name="playlist-fade">
+    <div v-show="showPlaylist" class="soundcloud-playlist" :class="{'show-playlist': showPlaylist}">
+      <div class="playlist-background-layer" @click="togglePlaylist"></div>
+      <iframe
+        :id="iframeId"
+        width="350px"
+        height="600"
+        class="playlist-iframe"
+        frameborder="no"
+        :src="`${playlistEmbedUrl}&color=%23${color}&start_track=${startTrack}&show_teaser=true&visual=true&sharing=${stringBoolean(sharing)}&show_artwork=${stringBoolean(
         showArtwork
       )}`"
-    ></iframe>
-  </div>
+      />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -59,7 +63,9 @@ export default {
     return {
       iframeId: 'soundcloudIframe',
       playlist: null,
-      playlistStoreUnsubscribe: null
+      playlistStoreUnsubscribe: null,
+      playlistInitDelay: 1000,
+      autoplayDelay: 1000
     };
   },
   computed: {
@@ -68,7 +74,8 @@ export default {
       shuffleOrder: 'playlist/shuffleOrder',
       tracks: 'playlist/tracks',
       activeTrackIndex: 'playlist/activeTrackIndex',
-      activeShuffleIndex: 'playlist/activeShuffleIndex'
+      activeShuffleIndex: 'playlist/activeShuffleIndex',
+      showPlaylist: 'playlist/showPlaylist',
     })
   },
   methods: {
@@ -120,16 +127,18 @@ export default {
         this.playlist.getSounds((response) => {
           this.$store.dispatch('playlist/setTracks', response);
           this.$store.dispatch('playlist/setShuffleOrder');
-          this.goToTrack(this.shuffleOrder[0]);
         });
 
         this.playlist.bind(SC.Widget.Events.READY, () => {
-          console.log("READY");
+          console.log("PLAYLIST: READY");
+          setTimeout(() => {
+            this.goToTrack(this.shuffleOrder[0]);
+          }, this.autoplayDelay);
         });
 
         // playlist is playing
         this.playlist.bind(SC.Widget.Events.PLAY, () => {
-          console.log('PLAYING!!');
+          console.log('PLAYLIST: PLAY TRACK');
           this.$store.dispatch('playlist/setPlaying', true);
 
           this.playlist.getCurrentSoundIndex(index => {
@@ -164,7 +173,10 @@ export default {
           alert('there is an error');
         });
 
-      }, 1000);
+      }, this.playlistInitDelay);
+    },
+    togglePlaylist() {
+      this.$store.dispatch('playlist/toggleShowPlaylist');
     }
   },
   mounted() {
@@ -179,6 +191,10 @@ export default {
         this.nextTrack();
       } else if (e.keyCode == 37) {   // Left arrow
         this.prevTrack();
+      } else if (e.keyCode === 27) {  // ESC key
+        if (this.showPlaylist) {
+          this.togglePlaylist();
+        }
       }
     });
 
@@ -193,10 +209,43 @@ export default {
       }
     });
   },
+  watch: {
+    showPlaylist: {
+      immediate: true,
+      handler: function(value) {
+        this.$store.dispatch('setBodyScrollLock', value);
+      }
+    }
+  },
   beforeDestroy() {
     this.playlistStoreUnsubscribe();
   }
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.soundcloud-playlist {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $playlist-z-index;
+}
+
+.playlist-background-layer {
+  @include absoluteAndFill;
+
+  background-color: rgba($color-gray-300, 0.5);
+  cursor: pointer;
+}
+
+.playlist-iframe {
+  position: relative;
+  width: 60vw;
+  height: 80vh;
+}
+</style>
