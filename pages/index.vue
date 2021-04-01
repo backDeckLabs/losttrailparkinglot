@@ -9,8 +9,9 @@
       </div>
       <layout-container class="title-text-container">
         <h1 class="title">
-          Lost Trail Parking Lot
-          <span class="dotcom">.com</span>
+          <span class="title-line">Lost Trail</span>
+          <span class="title-line">Parking Lot</span>
+          <span class="title-line">.com</span>
         </h1>
       </layout-container>
     </div>
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import {request, gql} from '@/cms/datocms';
+import {request, gql} from '@/plugins/datocms';
 import {pageMeta} from '~/mixins/pageMeta';
 import LayoutContainer from '@/components/layout/LayoutContainer';
 import BaseCtaLink from '@/components/base/BaseCtaLink';
@@ -59,6 +60,7 @@ export default {
 
 .home-page-intro {
   position: relative;
+  background-color: $color-white;
 }
 
 .title-video-background {
@@ -92,17 +94,28 @@ export default {
 
 .title {
   margin: 0;
-  max-width: 9ch;
-  font-size: 18vw;
+  font-size: 15vw;
   font-weight: 600;
   line-height: 1;
 
   @media (min-width: 900px) {
-    font-size: 175px;
+    font-size: 200px;
   }
 }
 
-.dotcom {
+.title-line {
+  position: relative;
   display: block;
+  margin-top: $spacing-200;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0.143em;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $color-white;
+  }
 }
 </style>

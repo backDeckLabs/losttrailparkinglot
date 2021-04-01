@@ -2,32 +2,32 @@
   <div class="playlist-controls">
     <transition name="fade">
       <div v-if="activeTrackData" class="playlist-marquee">
-        <h5>{{activeTrackData.title}}</h5>
-        <p>
-          <template v-if="activeTrackData.artist">
+        <p class="marquee-text">
+          <span>{{activeTrackData.title}}</span>
+          <span v-if="activeTrackData.artist">
             {{ activeTrackData.artist }}
-          </template>
-          <template v-if="activeTrackData.album">
+          </span>
+          <span v-if="activeTrackData.album">
             - ({{activeTrackData.album}})
-          </template>
+          </span>
         </p>
       </div>
     </transition>
-    <div class="playlist-main-control-container">
-      <button @click="prev"><base-icon icon="backward" /></button>
-      <button @click="toggle">
-        <transition name="fade" mode="out-in">
-          <base-icon v-if="playing" icon="pause" />
-          <base-icon v-else icon="play" />
-        </transition>
-      </button>
-      <button @click="next"><base-icon icon="forward" /></button>
-    </div>
-    <div class="playlist-utility">
-      <button @click="toggleShuffle">
+    <div class="playlist-control-container">
+      <button @click="toggleShuffle" class="button-utility button-shuffle">
         <base-icon icon="shuffle" :class="['shuffle-icon', {'active': shuffle}]" />
       </button>
-      <button @click="togglePlaylist"><base-icon icon="playlist" /></button>
+      <div class="playlist-main-control-container">
+        <button @click="prev" class="button-control button-prev"><base-icon icon="backward" /></button>
+        <button @click="toggle" class="button-control button-toggle">
+          <transition name="fade" mode="out-in">
+            <base-icon v-if="playing" icon="pause" />
+            <base-icon v-else icon="play" />
+          </transition>
+        </button>
+        <button @click="next" class="button-control button-next"><base-icon icon="forward" /></button>
+      </div>
+      <button @click="togglePlaylist" class="button-utility button-playlist"><base-icon icon="playlist" /></button>
     </div>
   </div>
 </template>
@@ -92,14 +92,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$marquee-height: $spacing-300;
+$marquee-height: $spacing-175;
 
 .playlist-controls {
   width: 100%;
-  max-width: 500px;
-  padding: calc(#{$marquee-height} + #{$spacing-100 * 2}) $gutter-mobile $spacing-100;
+  margin: 0 auto;
+  padding: calc(#{$marquee-height} + #{$spacing-100}) $gutter-mobile $spacing-100;
   color: $color-white;
-  background-color: rgba($color-gray-900, 0.5);
+  background-color: rgba($color-gray-900, 0.7);
   backdrop-filter: blur(5px);
 
   /deep/ {
@@ -109,30 +109,63 @@ $marquee-height: $spacing-300;
   }
 }
 
-.shuffle-icon {
-  &.active {
-    fill: $color-primary;
-  }
-}
-
 .playlist-marquee {
   position: absolute;
+  width: 100%;
   top: 0;
-  left: 50%;
   left: 0;
-  //transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 
   /deep/ {
     > * {
-      //width: 100%;
       display: flex;
       align-items: center;
+      margin: 0;
       white-space: nowrap;
     }
+  }
+}
 
-    .roller {
-      //width: 100%;
-    }
+.marquee-text {
+  width: max-content;
+  padding-left: 100%;
+  will-change: transform;
+  animation: marquee 25s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+.playlist-control-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playlist-main-control-container {
+  padding: 0 $spacing-200;
+}
+
+.button-control {
+  margin: 0 $spacing-50;
+
+  /deep/ svg {
+    width: $spacing-175;
+    height: $spacing-175;
+  }
+}
+
+.shuffle-icon {
+  &.active {
+    fill: $color-primary;
   }
 }
 </style>
